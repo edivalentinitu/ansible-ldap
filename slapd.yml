@@ -9,6 +9,7 @@
         root_password: "{{ ldap.root_password }}"
         de_grouper_password: "{{ ldap.de_grouper_password }}"
         ldap_reader_password: "{{ ldap.ldap_reader_password }}"
+        ldap_portal_password: "{{ ldap.ldap_portal_password }}"
 
         # # e.g.
         # dn_suffix: "dc=tugraz,dc=at"

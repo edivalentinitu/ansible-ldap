@@ -122,3 +122,39 @@
     bind_dn: "cn=Manager,{{ dn_suffix }}"
     bind_pw: "{{ root_password }}"
     state: "present"
+
+- name: "User: ldap_portal"
+  community.general.ldap_entry:
+    dn: "uid=ldap_portal,ou=People,{{ dn_suffix }}"
+    objectClass: "inetOrgPerson,posixAccount,shadowAccount"
+    attributes:
+      uid: "ldap_portal"
+      mail: "ldap_portal@example.org"
+      sn: "Reader"
+      givenName: "LDAP"
+      cn: "LDAP Reader"
+      title: "Other"
+      o: "N/A"
+      departmentNumber: "N/A"
+      uidNumber: "40002"
+      gidNumber: "10004"
+      homeDirectory: "/home/ldap_portal"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
+
+- name: "Set the ldap_portal password"
+  community.general.ldap_passwd:
+    dn: "uid=ldap_portal,ou=People,{{ dn_suffix }}"
+    passwd: "{{ ldap_portal_password }}"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+
+- name: "Add ldap_portal to the 'de_admins' Group"
+  community.general.ldap_attrs:
+    dn: "cn=de_admins,ou=Groups,{{ dn_suffix }}"
+    attributes:
+      memberUid: "ldap_portal"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
