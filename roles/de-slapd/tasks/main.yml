@@ -1,54 +1,57 @@
 ---
-- include: prereqs.yml
+- name: Install packages
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
 
-- name: "Create the Database Configuration File"
-  become: true
-  command:
+- name: Check slapd is running
+  ansible.builtin.shell: >-
+    set -o pipefail;
+    ps -ef |
+    awk '/[s]lapd .*-F/{print $2}'
   args:
-    argv:
-      - "cp"
-      - "/usr/share/openldap-servers/DB_CONFIG.example"
-      - "/var/lib/ldap/DB_CONFIG"
+    executable: /bin/bash
+  register: _de_slap__isrunning
+  changed_when: false
+
+- name: Kill wrong slapd
+  ansible.builtin.command:
+    cmd: kill {{ _de_slap__isrunning.stdout }}
+  when:
+    - _de_slap__isrunning.stdout | length > 0
+  args:
+    removes: /proc/{{ _de_slap__isrunning.stdout }}/status
 
 - name: "Encode the Root Password"
-  become: true
-  command:
+  ansible.builtin.command:
   args:
     argv:
       - "slappasswd"
       - "-s"
       - "{{ root_password }}"
   register: slappasswd
+  failed_when: slappasswd.stdout is not regex('^\{SSHA\}.{32}$')
+  changed_when: false
+  tags:
+    - installation
 
+# TODO: change to new configuration-format
 - name: "Generate the OpenLDAP Configuration File"
-  become: true
-  template:
+  ansible.builtin.template:
     src: "slapd.conf.j2"
-    dest: "/etc/openldap/slapd.conf"
+    dest: "/etc/ldap/slapd.conf"
     owner: root
-    mode: 0644
+    mode: "0644"
 
 - name: "Delete the OpenLDAP Configuration Directory"
-  become: true
-  file:
-    path: "/etc/openldap/slapd.d"
+  ansible.builtin.file:
+    path: "/etc/ldap/slapd.d"
     state: absent
 
-- name: "Create OpenLDAP Configuration Directory"
-  become: true
-  file:
-    path: "/etc/openldap/slapd.d"
-    state: directory
-    owner: ldap
-    group: ldap
-    mode: 0750
-
 - name: "Start the OpenLDAP Server"
-  become: true
-  systemd:
+  ansible.builtin.systemd:
     name: slapd
     daemon_reload: true
     enabled: true
-    state: started
+    state: restarted
 
-- include: entities.yml
+- name: Create entities
+  ansible.builtin.include_tasks: entities.yml
