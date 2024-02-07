@@ -1,0 +1,9 @@
+---
+- name: Install OpenLDAP Clients
+  ansible.builtin.apt:
+    name:
+      - slapd
+      - ldap-utils
+      - libldap-dev
+      - python3-ldap
+    update_cache: true

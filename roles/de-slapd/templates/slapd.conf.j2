@@ -1,11 +1,12 @@
-include  /etc/openldap/schema/core.schema
-include  /etc/openldap/schema/cosine.schema
-include  /etc/openldap/schema/inetorgperson.schema
-include  /etc/openldap/schema/nis.schema
+include  /etc/ldap/schema/core.schema
+include  /etc/ldap/schema/cosine.schema
+include  /etc/ldap/schema/inetorgperson.schema
+include  /etc/ldap/schema/nis.schema
 
-modulepath  /usr/lib64/openldap
+modulepath  /usr/lib/ldap
+moduleload  back_mdb.so
 
-pidfile /var/run/openldap/slapd.pid
+pidfile /var/run/ldap/slapd.pid
 lastmod  on
 idletimeout 120
 Allow bind_v2
@@ -14,9 +15,9 @@ loglevel packets stats args
 
 # Settings for PEM files
 
-#TLSCertificateFile /etc/openldap/cacerts/newcert.pem
-#TLSCertificateKeyFile /etc/openldap/cacerts/newkey.pem
-#TLSCACertificateFile /etc/openldap/cacerts/cacert.pem
+#TLSCertificateFile /etc/ldap/cacerts/newcert.pem
+#TLSCertificateKeyFile /etc/ldap/cacerts/newkey.pem
+#TLSCACertificateFile /etc/ldap/cacerts/cacert.pem
 #TLSCipherSuite :SSLv3
 #TLSVerifyClient allow
 
@@ -26,7 +27,7 @@ loglevel packets stats args
 #                                                                 #
 ###################################################################
 
-database   bdb
+database   mdb
 suffix     "{{dn_suffix}}"
 rootdn     "cn=Manager,{{dn_suffix}}"
 rootpw     {{ slappasswd.stdout }}
