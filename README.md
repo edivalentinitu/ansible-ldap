@@ -14,8 +14,8 @@ instance using an RFC 2307 schema.
   ansible-galaxy collection install community.general
   ```
 
-* make sure  EPEL repo is enabled on vm - `yum --enablerepo=extras install epel-release`
-* pip should point to version `pip install --upgrade pip==20.3`
+<!-- * make sure  EPEL repo is enabled on vm - `yum --enablerepo=extras install epel-release` -->
+<!-- * pip should point to version `pip install --upgrade pip==20.3` -->
 
 ## Playbooks
 
