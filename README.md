@@ -14,9 +14,6 @@ instance using an RFC 2307 schema.
   ansible-galaxy collection install community.general
   ```
 
-<!-- * make sure  EPEL repo is enabled on vm - `yum --enablerepo=extras install epel-release` -->
-<!-- * pip should point to version `pip install --upgrade pip==20.3` -->
-
 ## Playbooks
 
 ### slapd.yml
@@ -24,16 +21,16 @@ instance using an RFC 2307 schema.
 This playbook installs OpenLDAP itself. This is the only playbook required for this intallation step. After installing
 OpenLDAP itself, this playbook installs the RFC 2307 schema and defines the following entities:
 
-| Entity      | Entity Type | Description                                                                  |
-| ------      | ----------- | -----------                                                                  |
-| Base Domain | Domain      | This is the base for all of the other domains, and the name is configurable. |
-| People      | Domain      | This is the base entity for all DE users.                                    |
-| Groups      | Domain      | This is the base entity for some groups of users.                            |
-| everyone    | Group       | This is the group containing all DE users.                                   |
-| de_admins   | Group       | Members of this group will have administrative privileges in the DE.         |
-| de_grouper  | User        | This is an account used by DE services to access Grouper.                    |
-| ldap_reader | User        | This is the account used by Grouper and Keycloak to access LDAP.             |
-| ldap_portal | User        | This is the account used by user-portal to access LDAP. Member of de_admins group. - TODO|
+| Entity      | Entity Type | Description                                                                        |
+| ------      | ----------- | -----------                                                                        |
+| Base Domain | Domain      | This is the base for all of the other domains, and the name is configurable.       |
+| People      | Domain      | This is the base entity for all DE users.                                          |
+| Groups      | Domain      | This is the base entity for some groups of users.                                  |
+| everyone    | Group       | This is the group containing all DE users.                                         |
+| de_admins   | Group       | Members of this group will have administrative privileges in the DE.               |
+| de_grouper  | User        | This is an account used by DE services to access Grouper.                          |
+| ldap_reader | User        | This is the account used by Grouper and Keycloak to access LDAP.                   |
+| ldap_portal | User        | This is the account used by user-portal to access LDAP. Member of de_admins group. |
 
 
 
@@ -50,13 +47,13 @@ ldap.example.org
 
 This set of playbooks requires a few group variables:
 
-| Variable                  | Description                                                |
-| --------                  | -----------                                                |
-| ldap.dn_suffix            | This is the name of the base domain in the LDAP directory. |
-| ldap.root_password        | This is the password of the LDAP administrative account.   |
-| ldap.de_grouper_password  | This is the password of the `de_grouper` account.          |
-| ldap.ldap_reader_password | This is the password of the `ldap_reader` account.         |
-| ldap.ldap_portal_password | This is the password of the `ldap_portal` account.        - TODO | 
+| Variable             | Description                                                |
+| --------             | -----------                                                |
+| dn_suffix            | This is the name of the base domain in the LDAP directory. |
+| root_password        | This is the password of the LDAP administrative account.   |
+| de_grouper_password  | This is the password of the `de_grouper` account.          |
+| ldap_reader_password | This is the password of the `ldap_reader` account.         |
+| ldap_portal_password | This is the password of the `ldap_portal` account.         |
 
 Example group variables file:
 
