@@ -92,3 +92,8 @@ This installation invoves merely running the playbook:
 ```bash
 ansible-playbook -i inventory/ slapd.yml --user root
 ```
+
+# Check status
+```bash
+systemctl status slapd.service
+```
