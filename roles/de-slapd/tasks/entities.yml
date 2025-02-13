@@ -51,6 +51,17 @@
     bind_pw: "{{ root_password }}"
     state: "present"
 
+- name: "Group: community"
+  community.general.ldap_entry:
+    dn: "cn=community,ou=Groups,{{ dn_suffix }}"
+    objectClass: "posixGroup"
+    attributes:
+      description: "All community users"
+      gidNumber: "10002"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
+
 - name: "User: de_grouper"
   community.general.ldap_entry:
     dn: "uid=de_grouper,ou=People,{{ dn_suffix }}"
