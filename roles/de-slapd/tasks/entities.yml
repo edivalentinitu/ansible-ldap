@@ -169,3 +169,32 @@
     bind_dn: "cn=Manager,{{ dn_suffix }}"
     bind_pw: "{{ root_password }}"
     state: "present"
+
+- name: "User: anonymous"
+  community.general.ldap_entry:
+    dn: "uid=anonymous,ou=People,{{ dn_suffix }}"
+    objectClass: "inetOrgPerson,posixAccount,shadowAccount"
+    attributes:
+      uid: "anonymous"
+      mail: "anonymous@example.org" # todo: get domain name
+      sn: "Access"
+      givenName: "Anonymous-Public"
+      cn: "Anonymous-Public Access"
+      title: "Other"
+      o: "N/A" #TODO: ORG e.g. Graz University of technology
+      departmentNumber: "N/A"
+      uidNumber: "40004"
+      gidNumber: "10008"
+      homeDirectory: "/home/anonymous"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
+
+- name: "Add anonymous to the 'everyone' Group"
+  community.general.ldap_attrs:
+    dn: "cn=everyone,ou=Groups,{{ dn_suffix }}"
+    attributes:
+      memberUid: "anonymous"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"

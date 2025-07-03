@@ -31,6 +31,7 @@ OpenLDAP itself, this playbook installs the RFC 2307 schema and defines the foll
 | de_grouper  | User        | This is an account used by DE services to access Grouper.                          |
 | ldap_reader | User        | This is the account used by Grouper and Keycloak to access LDAP.                   |
 | ldap_portal | User        | This is the account used by user-portal to access LDAP. Member of de_admins group. |
+| anonymous   | User        | This is the account for Anonymous-Public Access. Member of everyone group. |
 
 
 
