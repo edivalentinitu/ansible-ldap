@@ -94,7 +94,30 @@ This installation invoves merely running the playbook:
 ansible-playbook -i inventory/ slapd.yml --user root
 ```
 
+# Local development (Ubuntu/Debian)
+To test/develop the LDAP server locally, make sure to:
+1. Change the inventory/ldap file to have **localhost** or **127.0.0.1**
+2. The previous command should be: (**-K** prompts the user for the sudo password)
+```bash
+ansible-playbook -i inventory/ --become slapd.yml --user root --connection=local -K
+```
+3. Some systems can block LDAP starting procesure, like AppArmor. For this specific case, follow these steps.
+    - try to run the playbook without modyfing anything
+    - if _Start the OpenLDAP Server_ task fails, then continue with the next steps
+    - check ```systemctl status slapd.service``` for _unable to open pid file "/var/run/ldap/slapd.pid": 13 (Permission denied)_
+    - if that is indeed the issue, check also ```sudo dmesg | grep DENIED | grep slapd```
+    - if there are DENIED entries: ```sudo nano /etc/apparmor.d/usr.sbin.slapd``` and add this line:
+      **/run/ldap/slapd.pid rwk,**
+    - then run ```sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.slapd```
+    - restart slapd: ```sudo systemctl restart slapd```
+    - run just the remaining _Create entities_ task from main.yml
+
 # Check status
 ```bash
 systemctl status slapd.service
+```
+
+# Logs
+```bash
+journalctl -u slapd
 ```
