@@ -121,3 +121,53 @@ systemctl status slapd.service
 ```bash
 journalctl -u slapd
 ```
+---
+
+# LDAP Data Migration Guide
+
+This guide can be used for both **QA** and **PROD** environments by adjusting the hostnames and file paths accordingly.  
+
+---
+
+## 1. Backup from Old VM
+
+```bash
+# SSH into the old LDAP VM
+ssh root@<OLD_LDAP_HOST>
+
+# Backup OpenLDAP data
+slapcat -l /root/today.ldif
+
+# Copy backup file to the new VM
+scp root@<OLD_LDAP_HOST>:/root/today.ldif root@<NEW_LDAP_HOST>:/root/
+```
+
+## 2. Restore on New VM
+
+```bash
+# SSH into the new LDAP VM
+ssh root@<NEW_LDAP_HOST>
+
+# Stop the running LDAP service
+systemctl stop slapd.service
+
+# Backup existing LDAP directory and create a new one
+cd /var/lib/
+mv ldap/ ldap.$(date +%Y%m%d)
+mkdir ldap
+
+# Restore from the LDIF file
+slapadd -f /etc/ldap/slapd.conf -l ~/today.ldif
+
+# Fix ownership permissions
+chown -R openldap:openldap ldap
+
+# Restart LDAP service
+systemctl start slapd.service
+```
+
+## Notes
+
+* Replace `<OLD_LDAP_HOST>` and `<NEW_LDAP_HOST>` with the appropriate hostnames or IPs for your environment.
+* Ensure you have sufficient privileges (root or sudo) on both systems.
+* Always test restoration on QA before applying to PROD.
