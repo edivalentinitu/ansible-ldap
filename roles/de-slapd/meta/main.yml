@@ -1,7 +1,7 @@
 galaxy_info:
-  author: Sarah Roberts
+  author: Graz University of Technology
   description: Installs the OpenLDAP Server for the CyVerse Discovery Environment
-  company: CyVerse
+  company: Graz University of Technology
   license: BSD
 
   min_ansible_version: '2.6'

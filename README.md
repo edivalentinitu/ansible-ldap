@@ -31,6 +31,7 @@ OpenLDAP itself, this playbook installs the RFC 2307 schema and defines the foll
 | de_grouper  | User        | This is an account used by DE services to access Grouper.                          |
 | ldap_reader | User        | This is the account used by Grouper and Keycloak to access LDAP.                   |
 | ldap_portal | User        | This is the account used by user-portal to access LDAP. Member of de_admins group. |
+| ldap_writer | User        | Used by Keycloak to create and manage LDAP entries. |
 | anonymous   | User        | This is the account for Anonymous-Public Access. Member of everyone group. |
 
 
@@ -55,6 +56,7 @@ This set of playbooks requires a few group variables:
 | de_grouper_password  | This is the password of the `de_grouper` account.          |
 | ldap_reader_password | This is the password of the `ldap_reader` account.         |
 | ldap_portal_password | This is the password of the `ldap_portal` account.         |
+| ldap_writer_password | This is the password of the `ldap_writer` account.         |
 
 Example group variables file:
 
@@ -64,6 +66,7 @@ ldap:
   root_password: "some-password"
   de_grouper_password: "some-other-password"
   ldap_reader_password: "yet-another-password"
+  ldap_writer_password: "yet-another-password"
 ```
 
 ## LDAP Admin Account
@@ -85,6 +88,7 @@ name is `dc=example,dc=org`, then the manager account is `cn=Manager,dc=example,
         root_password: "notprod"
         de_grouper_password: "notprod"
         ldap_reader_password: "notprod"
+        ldap_writer_password: "notprod"
 ```
 
 # Run Playbook
