@@ -134,6 +134,42 @@
     bind_pw: "{{ root_password }}"
     state: "present"
 
+- name: "User: ldap_writer"
+  community.general.ldap_entry:
+    dn: "uid=ldap_writer,ou=People,{{ dn_suffix }}"
+    objectClass: "inetOrgPerson,posixAccount,shadowAccount"
+    attributes:
+      uid: "ldap_writer"
+      mail: "ldap_writer@example.org"
+      sn: "Writer"
+      givenName: "LDAP"
+      cn: "LDAP Writer"
+      title: "Other"
+      o: "N/A"
+      departmentNumber: "N/A"
+      uidNumber: "40005"
+      gidNumber: "10002"
+      homeDirectory: "/home/ldap_writer"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
+
+- name: "Set the ldap_writer password"
+  community.general.ldap_passwd:
+    dn: "uid=ldap_writer,ou=People,{{ dn_suffix }}"
+    passwd: "{{ ldap_writer_password }}"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+
+- name: "Add ldap_writer to the 'everyone' Group"
+  community.general.ldap_attrs:
+    dn: "cn=everyone,ou=Groups,{{ dn_suffix }}"
+    attributes:
+      memberUid: "ldap_writer"
+    bind_dn: "cn=Manager,{{ dn_suffix }}"
+    bind_pw: "{{ root_password }}"
+    state: "present"
+
 - name: "User: ldap_portal"
   community.general.ldap_entry:
     dn: "uid=ldap_portal,ou=People,{{ dn_suffix }}"
