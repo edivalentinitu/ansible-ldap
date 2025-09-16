@@ -1,0 +1,7 @@
+---
+- name: Update slapd version
+  hosts: ldap
+  roles:
+    - role: upgrade
+      vars:
+        ldap_version: 2.6.7+dfsg-1~exp1ubuntu8.2

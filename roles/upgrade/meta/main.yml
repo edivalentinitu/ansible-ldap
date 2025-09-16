@@ -1,0 +1,16 @@
+galaxy_info:
+  author: Graz University of Technology
+  description: Upgrades the OpenLDAP Server for the CyVerse Discovery Environment
+  company: Graz University of Technology
+  license: BSD
+
+  min_ansible_version: '2.6'
+
+  platforms:
+  - name: Debian
+    versions:
+    - bookworm
+
+  galaxy_tags: []
+
+dependencies: []

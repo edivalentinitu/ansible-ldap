@@ -1,0 +1,5 @@
+- name: Install specific version of OpenLDAP (slapd)
+  ansible.builtin.apt:
+    name: slapd={{ ldap_version }}
+    state: present
+    update_cache: yes
